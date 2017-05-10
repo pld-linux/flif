@@ -1,13 +1,13 @@
 Summary:	Free Lossless Image Format library
 Summary(pl.UTF-8):	Biblioteka do obsługi formatu FLIF (Free Lossless Image Format)
 Name:		flif
-Version:	0.2.2
+Version:	0.3
 Release:	1
 License:	LGPL v3+ (libflif and programs), Apache v2.0 (libflif_dec)
 Group:		Libraries
 #Source0Download: https://github.com/FLIF-hub/FLIF/releases
 Source0:	https://github.com/FLIF-hub/FLIF/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	a6be0a90cf3a90cdfcb1b4b0391237b9
+# Source0-md5:	0bc4d0a71d67b2c6e040e2d5a93dcd2d
 Patch0:		%{name}-install.patch
 URL:		http://flif.info/
 BuildRequires:	SDL2-devel >= 2
