@@ -1,44 +1,30 @@
---- FLIF-0.2.2/src/CMakeLists.txt.orig	2016-11-08 12:33:17.000000000 +0100
-+++ FLIF-0.2.2/src/CMakeLists.txt	2016-12-03 22:07:35.902563666 +0100
-@@ -95,6 +95,8 @@
-     target_compile_definitions(flif_exe PRIVATE ${DEFINITIONS_FOR_ALL_TARGETS} STATIC_GETOPT ) # prevents dllexporting symbols for getopt
- endif()
+--- FLIF-0.4/src/CMakeLists.txt.orig	2021-11-21 14:31:43.000000000 +0100
++++ FLIF-0.4/src/CMakeLists.txt	2021-12-05 19:12:26.665932118 +0100
+@@ -243,18 +243,10 @@ if(GDK_FOUND AND (BUILD_SHARED_LIBS OR B
+     target_link_libraries(pixbufloader-flif ${GDK_LIBRARIES})
+     set_target_properties(pixbufloader-flif PROPERTIES OUTPUT_NAME pixbufloader-flif)
  
-+install(TARGETS flif_exe DESTINATION bin)
-+
- # library
- 
- add_library(flif_lib SHARED ${COMMON_SOURCES} ${FLIF_SRC_DIR}/flif-enc.cpp ${FLIF_SRC_DIR}/library/flif-interface.cpp)
-@@ -105,8 +105,8 @@
- target_link_libraries(flif_lib ${PNG_LIBRARY} ${STATIC_LINKED_LIBS})
- target_link_libraries(flif_lib_dec ${PNG_LIBRARY} ${STATIC_LINKED_LIBS})
- 
--set_target_properties(flif_lib PROPERTIES OUTPUT_NAME flif)
--set_target_properties(flif_lib_dec PROPERTIES OUTPUT_NAME flif_dec)
-+set_target_properties(flif_lib PROPERTIES OUTPUT_NAME flif SOVERSION 0)
-+set_target_properties(flif_lib_dec PROPERTIES OUTPUT_NAME flif_dec SOVERSION 0)
- 
- target_compile_definitions(flif_lib PRIVATE ${DEFINITIONS_FOR_ALL_TARGETS} FLIF_BUILD_DLL )
- target_compile_definitions(flif_lib_dec PRIVATE ${DEFINITIONS_FOR_ALL_TARGETS} FLIF_BUILD_DLL DECODER_ONLY )
-@@ -113,6 +115,13 @@
- target_include_directories(flif_lib PRIVATE ${FLIF_SRC_DIR}/../extern)
- target_include_directories(flif_lib_dec PRIVATE ${FLIF_SRC_DIR}/../extern)
- 
-+install(TARGETS flif_lib flif_lib_dec DESTINATION lib${LIB_SUFFIX})
-+install(FILES ${FLIF_SRC_DIR}/library/flif.h
-+              ${FLIF_SRC_DIR}/library/flif_common.h
-+              ${FLIF_SRC_DIR}/library/flif_dec.h
-+              ${FLIF_SRC_DIR}/library/flif_enc.h
-+        DESTINATION include)
-+
- # viewflif
- 
- if(${SDL2_FOUND})
-@@ -121,6 +130,7 @@
-     target_link_libraries(viewflif flif_lib_dec ${SDL2_LIBRARY} ${SDL2MAIN_LIBRARY})
-     target_include_directories(viewflif PRIVATE ${FLIF_SRC_DIR}/library ${SDL2_INCLUDE_DIR})
-     target_compile_definitions(viewflif PRIVATE FLIF_USE_DLL)
-+    install(TARGETS viewflif DESTINATION bin)
- endif()
- 
- # test
+-    add_library(pixbufloader-flif-static STATIC flif-pixbuf-loader.c)
+-    target_include_directories(pixbufloader-flif-static PRIVATE ${FLIF_SRC_DIR}/library ${GDK_INCLUDE_DIRS})
+-    target_compile_options(pixbufloader-flif-static PRIVATE ${GDK_CFLAGS})
+-    target_compile_definitions(pixbufloader-flif-static PRIVATE ${DEFINITIONS_FOR_ALL_TARGETS})
+-    target_link_libraries(pixbufloader-flif-static ${GDK_LIBRARIES})
+-    set_target_properties(pixbufloader-flif-static PROPERTIES OUTPUT_NAME pixbufloader-flif)
+     if (BUILD_SHARED_LIBS)
+        target_link_libraries(pixbufloader-flif flif_lib)
+-       target_link_libraries(pixbufloader-flif-static flif_lib) 
+     else()
+        target_link_libraries(pixbufloader-flif flif_lib_static)
+-       target_link_libraries(pixbufloader-flif-static flif_lib_static)
+     endif(BUILD_SHARED_LIBS)
+ #We have to be sure that the "-dont-define-prefix", otherwise, on mingw-w64, a complete path
+ #is given with pkg-config and that's not desirable for some packaging systems.
+@@ -266,7 +258,7 @@ if(GDK_FOUND AND (BUILD_SHARED_LIBS OR B
+            message(FATAL_ERROR "Error: ${RES_VAR}")
+     endif(("${RES_VAR}" STREQUAL "") OR ("${RES_VAR}" STREQUAL "0"))
+     if ("${GDK_RES_ERROR}" STREQUAL "")
+-    install(TARGETS pixbufloader-flif pixbufloader-flif-static 
++    install(TARGETS pixbufloader-flif
+       RUNTIME DESTINATION ${GDK_MODULES_DIR}
+       LIBRARY DESTINATION ${GDK_MODULES_DIR}
+       ARCHIVE DESTINATION ${GDK_MODULES_DIR}) 
