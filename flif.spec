@@ -196,9 +196,7 @@ rm -rf $RPM_BUILD_ROOT
 # already in file
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/FLIF/flif.magic
 
-install -Dp doc/flif.1 $RPM_BUILD_ROOT%{_mandir}/man1/flif.1
 install -Dp doc/flif.bash-completion $RPM_BUILD_ROOT%{bash_compdir}/flif
-install tools/{apng2flif,gif2flif} $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

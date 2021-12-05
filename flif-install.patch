@@ -1,5 +1,27 @@
 --- FLIF-0.4/src/CMakeLists.txt.orig	2021-11-21 14:31:43.000000000 +0100
-+++ FLIF-0.4/src/CMakeLists.txt	2021-12-05 19:12:26.665932118 +0100
++++ FLIF-0.4/src/CMakeLists.txt	2021-12-05 21:23:49.719173409 +0100
+@@ -182,8 +182,8 @@ if(BUILD_SHARED_LIBS)
+     target_link_libraries(dflif_exe flif_lib_dec)
+     install(TARGETS flif_lib flif_lib_dec
+       RUNTIME DESTINATION bin
+-      LIBRARY DESTINATION lib
+-      ARCHIVE DESTINATION lib
++      LIBRARY DESTINATION lib${LIB_SUFFIX}
++      ARCHIVE DESTINATION lib${LIB_SUFFIX}
+       PUBLIC_HEADER DESTINATION include)
+ endif(BUILD_SHARED_LIBS)
+ 
+@@ -220,8 +220,8 @@ if(BUILD_STATIC_LIBS)
+ 
+     install(TARGETS flif_lib_static flif_lib_dec_static
+       RUNTIME DESTINATION bin
+-      LIBRARY DESTINATION lib
+-      ARCHIVE DESTINATION lib
++      LIBRARY DESTINATION lib${LIB_SUFFIX}
++      ARCHIVE DESTINATION lib${LIB_SUFFIX}
+       PUBLIC_HEADER DESTINATION include)
+ 
+     if (NOT(BUILD_SHARED_LIBS))
 @@ -243,18 +243,10 @@ if(GDK_FOUND AND (BUILD_SHARED_LIBS OR B
      target_link_libraries(pixbufloader-flif ${GDK_LIBRARIES})
      set_target_properties(pixbufloader-flif PROPERTIES OUTPUT_NAME pixbufloader-flif)
