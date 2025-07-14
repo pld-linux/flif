@@ -178,7 +178,7 @@ Moduł biblioteki gdk-pixbuf2 wczytujący pliki FLIF.
 
 %prep
 %setup -q -n FLIF-%{version}
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 install -d src/build
